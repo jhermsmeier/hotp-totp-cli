@@ -6,10 +6,10 @@ Usage: totp [options] <key>
 
 Options:
 
-  -d, --digits       Number of passcode digits [6-10] (Default: 6)
+  -d, --digits       Number of passcode digits to generate [6-10] (Default: 6)
   -a, --algorithm    HMAC algorithm to use (Default: sha1)
   -p, --period       Seconds the passcode is valid for (Default: 30)
-  -t, --time         Time for which to calculate the passcode
+  -t, --time         Time in seconds for which to calculate the passcode
   -e, --epoch        T-0
 
   -h, --help
@@ -28,32 +28,47 @@ if( argv.includes( '-v' ) || argv.includes( '--version' ) ) {
 
 var hotp = require( 'hotp' )
 var parseKey = require( '../lib/parse-key' )
+var getAlgorithm = require( '../lib/get-algorithm' )
 
-var key = argv.shift()
-var digits = argv.shift()
+function getOptions( argv ) {
+
+  var opt = { _: [] }
+  var part = null
+
+  while( part = argv.shift() ) {
+    if( part == '-d' || part == '--digits' ) {
+      opt.digits = +argv.shift()
+    } else if( part == '-a' || part == '--algorithm' ) {
+      opt.algorithm = argv.shift()
+    } else if( part == '-p' || part == '--period' ) {
+      opt.timeStep = argv.shift()
+    } else if( part == '-t' || part == '--time' ) {
+      opt.time = +argv.shift()
+    } else if( part == '-e' || part == '--epoch' ) {
+      opt.t0 = +argv.shift()
+    } else {
+      opt._.push( part )
+    }
+  }
+
+  return opt
+
+}
+
+var options = getOptions( argv )
+var key = options._.shift()
 
 if( !key ) {
+  console.error( '\n[ERROR]', 'Key missing' )
   console.error( USAGE )
   process.exit( 1 )
 }
 
-var options = parseKey( key )
+// CLI options override key URI options
+options = Object.assign( parseKey( key ), options )
 
-// Normalize hash algorithm identifier
-if( options.algorithm ) {
-  var crypto = require( 'crypto' )
-  var hashes = crypto.getHashes()
-  var normalize = ( value ) => {
-    return value.trim().toLowerCase()
-  }
-  var wanted = normalize( options.algorithm )
-  var hash = hashes.find(( name ) => {
-    return wanted === normalize( name )
-  })
-  if( !hashes.includes( hash ) ) {
-    throw new Error( `Hash algorithm "${options.algorithm}" not supported by platform` )
-  }
-  options.algorithm = hash
-}
+// Normalize hash algorithm identifier,
+// and check if the platform supports it
+options.algorithm = getAlgorithm( options.algorithm )
 
 console.log( hotp.totp( options.key, options ) )

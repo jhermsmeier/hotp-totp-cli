@@ -1,6 +1,4 @@
 #!/usr/bin/env node
-var hotp = require( 'hotp' )
-var parseKey = require( '../lib/parse-key' )
 var argv = process.argv.slice( 2 )
 
 var USAGE = `
@@ -10,7 +8,7 @@ Options:
 
   -c, --counter      Counter value to calculate the passcode for
   -a, --algorithm    HMAC algorithm to use (Default: sha1)
-  -d, --digits       Number of passcode digits [6-10] (Default: 6)
+  -d, --digits       Number of passcode digits to generate [6-10] (Default: 6)
 
   -h, --help
   -v, --version
@@ -26,17 +24,45 @@ if( argv.includes( '--version' ) ) {
   process.exit( 0 )
 }
 
-var key = argv.shift()
-// var counter = argv.shift()
-// var digits = argv.shift()
+var hotp = require( 'hotp' )
+var parseKey = require( '../lib/parse-key' )
+var getAlgorithm = require( '../lib/get-algorithm' )
 
-if( !key || !counter ) {
+function getOptions( argv ) {
+
+  var opt = { _: [] }
+  var part = null
+
+  while( part = argv.shift() ) {
+    if( part == '-d' || part == '--digits' ) {
+      opt.digits = +argv.shift()
+    } else if( part == '-a' || part == '--algorithm' ) {
+      opt.algorithm = argv.shift()
+    } else if( part == '-c' || part == '--counter' ) {
+      opt.counter = argv.shift()
+    } else {
+      opt._.push( part )
+    }
+  }
+
+  return opt
+
+}
+
+var options = getOptions( argv )
+var key = options._.shift()
+
+// CLI options override key URI options
+options = Object.assign( parseKey( key ), options )
+
+if( !key || !isFinite( options.counter ) ) {
+  console.error( '\n[ERROR]', 'Key or counter value missing' )
   console.error( USAGE )
   process.exit( 1 )
 }
 
-var options = parseKey( key )
-
-options.digits = digits ? +digits : options.digits
+// Normalize hash algorithm identifier,
+// and check if the platform supports it
+options.algorithm = getAlgorithm( options.algorithm )
 
 console.log( hotp( options.key, options.counter, options ) )
