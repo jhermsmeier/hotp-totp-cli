@@ -69,6 +69,8 @@ options = Object.assign( parseKey( key ), options )
 
 // Normalize hash algorithm identifier,
 // and check if the platform supports it
-options.algorithm = getAlgorithm( options.algorithm )
+if( options.algorithm ) {
+  options.algorithm = getAlgorithm( options.algorithm )
+}
 
 console.log( hotp.totp( options.key, options ) )

@@ -63,6 +63,8 @@ if( !key || !isFinite( options.counter ) ) {
 
 // Normalize hash algorithm identifier,
 // and check if the platform supports it
-options.algorithm = getAlgorithm( options.algorithm )
+if( options.algorithm ) {
+  options.algorithm = getAlgorithm( options.algorithm )
+}
 
 console.log( hotp( options.key, options.counter, options ) )
