@@ -25,7 +25,7 @@ Usage: totp [options] <key>
 
 Options:
 
-  -d, --digits       Number of passcode digits [6-10] (Default: 6)
+  -d, --digits       Number of passcode digits to generate [6-10] (Default: 6)
   -a, --algorithm    HMAC algorithm to use (Default: sha1)
   -p, --period       Seconds the passcode is valid for (Default: 30)
   -t, --time         Time for which to calculate the passcode
@@ -45,7 +45,7 @@ Options:
 
   -c, --counter      Counter value to calculate the passcode for
   -a, --algorithm    HMAC algorithm to use (Default: sha1)
-  -d, --digits       Number of passcode digits [6-10] (Default: 6)
+  -d, --digits       Number of passcode digits to generate [6-10] (Default: 6)
 
   -h, --help
   -v, --version
