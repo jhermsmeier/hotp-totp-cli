@@ -11,9 +11,11 @@ HMAC- and Time-Based One-Time Password (HOTP / TOTP) Command Line Interface
 $ npm install --global hotp-totp-cli
 ```
 
+Will install two CLI utilities, `hotp` and `totp`.
+
 ## Usage
 
-The key can be either a base32 ([RFC 3548]) encoded string, or an `optauth:` URI in [Key URI Format]
+The key can be either a **base32** ([RFC 3548]) encoded string, or an `optauth:` URI in [Key URI Format]
 
 [RFC 3548]: http://tools.ietf.org/html/rfc3548
 [Key URI Format]: https://github.com/google/google-authenticator/wiki/Key-Uri-Format
@@ -64,4 +66,4 @@ Avoid manually typing your OTP token with a CLI credential manager (i.e. [pass])
 npm publish --otp $( totp $( pass 2fa/npm.key ) )
 ```
 
-NOTE: This is a bad idea if your GPG passphrase is stored anywhere else except your head.
+**NOTE:** This is probably a bad idea if your GPG passphrase is stored anywhere else except your head.
