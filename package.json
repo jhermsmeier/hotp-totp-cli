@@ -1,0 +1,34 @@
+{
+  "name": "hotp-totp-cli",
+  "version": "0.0.0",
+  "description": "HMAC-Based One-Time Password (HOTP) and Time-Based One-Time Password (TOTP) Command Line Interface",
+  "author": "Jonas Hermsmeier <jhermsmeier@gmail.com> (https://jhermsmeier.de)",
+  "license": "MIT",
+  "keywords": [
+    "hotp",
+    "totp",
+    "otp",
+    "cli",
+    "2fa",
+    "authenticator",
+    "authentication",
+    "hmac"
+  ],
+  "main": "lib",
+  "bin": {
+    "hotp": "bin/hotp",
+    "totp": "bin/totp"
+  },
+  "scripts": {},
+  "dependencies": {
+    "hotp": "^2.0.0"
+  },
+  "homepage": "https://github.com/jhermsmeier/hotp-totp-cli",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jhermsmeier/hotp-totp-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jhermsmeier/hotp-totp-cli/issues"
+  }
+}

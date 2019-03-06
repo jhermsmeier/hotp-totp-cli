@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+var hotp = require( 'hotp' )
+var parseKey = require( '../lib/parse-key' )
+var argv = process.argv.slice( 2 )
+
+var USAGE = `
+Usage: hotp [options] <key>
+
+Options:
+
+  -c, --counter      Counter value to calculate the passcode for
+  -a, --algorithm    HMAC algorithm to use (Default: sha1)
+  -d, --digits       Number of passcode digits [6-10] (Default: 6)
+
+  -h, --help
+  -v, --version
+`
+
+if( argv.includes( '-h' ) || argv.includes( '--help' ) ) {
+  console.log( USAGE )
+  process.exit( 0 )
+}
+
+if( argv.includes( '--version' ) ) {
+  console.log( require( '../package.json' ).version )
+  process.exit( 0 )
+}
+
+var key = argv.shift()
+// var counter = argv.shift()
+// var digits = argv.shift()
+
+if( !key || !counter ) {
+  console.error( USAGE )
+  process.exit( 1 )
+}
+
+var options = parseKey( key )
+
+options.digits = digits ? +digits : options.digits
+
+console.log( hotp( options.key, options.counter, options ) )

@@ -1,0 +1,59 @@
+#!/usr/bin/env node
+var argv = process.argv.slice( 2 )
+
+var USAGE = `
+Usage: totp [options] <key>
+
+Options:
+
+  -d, --digits       Number of passcode digits [6-10] (Default: 6)
+  -a, --algorithm    HMAC algorithm to use (Default: sha1)
+  -p, --period       Seconds the passcode is valid for (Default: 30)
+  -t, --time         Time for which to calculate the passcode
+  -e, --epoch        T-0
+
+  -h, --help
+  -v, --version
+`
+
+if( argv.includes( '-h' ) || argv.includes( '--help' ) ) {
+  console.log( USAGE )
+  process.exit( 0 )
+}
+
+if( argv.includes( '-v' ) || argv.includes( '--version' ) ) {
+  console.log( require( '../package.json' ).version )
+  process.exit( 0 )
+}
+
+var hotp = require( 'hotp' )
+var parseKey = require( '../lib/parse-key' )
+
+var key = argv.shift()
+var digits = argv.shift()
+
+if( !key ) {
+  console.error( USAGE )
+  process.exit( 1 )
+}
+
+var options = parseKey( key )
+
+// Normalize hash algorithm identifier
+if( options.algorithm ) {
+  var crypto = require( 'crypto' )
+  var hashes = crypto.getHashes()
+  var normalize = ( value ) => {
+    return value.trim().toLowerCase()
+  }
+  var wanted = normalize( options.algorithm )
+  var hash = hashes.find(( name ) => {
+    return wanted === normalize( name )
+  })
+  if( !hashes.includes( hash ) ) {
+    throw new Error( `Hash algorithm "${options.algorithm}" not supported by platform` )
+  }
+  options.algorithm = hash
+}
+
+console.log( hotp.totp( options.key, options ) )
