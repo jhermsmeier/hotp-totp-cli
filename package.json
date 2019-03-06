@@ -1,6 +1,6 @@
 {
   "name": "hotp-totp-cli",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "HMAC-Based One-Time Password (HOTP) and Time-Based One-Time Password (TOTP) Command Line Interface",
   "author": "Jonas Hermsmeier <jhermsmeier@gmail.com> (https://jhermsmeier.de)",
   "license": "MIT",
