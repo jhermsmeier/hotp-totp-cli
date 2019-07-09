@@ -1,7 +1,7 @@
 # HOTP TOTP CLI
-[![npm](https://img.shields.io/npm/v/hotp-totp-cli.svg?style=flat-square)](https://npmjs.com/package/hotp-totp-cli)
-[![npm license](https://img.shields.io/npm/l/hotp-totp-cli.svg?style=flat-square)](https://npmjs.com/package/hotp-totp-cli)
-[![npm downloads](https://img.shields.io/npm/dm/hotp-totp-cli.svg?style=flat-square)](https://npmjs.com/package/hotp-totp-cli)
+[![npm](https://flat.badgen.net/npm/v/hotp-totp-cli)](https://npmjs.com/package/hotp-totp-cli)
+[![npm license](https://flat.badgen.net/npm/license/hotp-totp-cli)](https://npmjs.com/package/hotp-totp-cli)
+[![npm downloads](https://flat.badgen.net/npm/dm/hotp-totp-cli)](https://npmjs.com/package/hotp-totp-cli)
 
 HMAC- and Time-Based One-Time Password (HOTP / TOTP) Command Line Interface
 
