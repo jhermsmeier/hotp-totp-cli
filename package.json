@@ -19,7 +19,9 @@
     "hotp": "bin/hotp",
     "totp": "bin/totp"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "mocha"
+  },
   "dependencies": {
     "hotp": "^2.0.0"
   },
@@ -30,5 +32,8 @@
   },
   "bugs": {
     "url": "https://github.com/jhermsmeier/hotp-totp-cli/issues"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
   }
 }
